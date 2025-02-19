@@ -14,7 +14,7 @@ License Info: See license.txt file
 from pydantic import BaseModel, Field
 from typing import Union, Any
 from datetime import datetime
-from utils.chat_utils.message import SinglePartMessage, MultiPartMessage
+from message import SinglePartMessage, MultiPartMessage
 
 #
 # Main Chat class
