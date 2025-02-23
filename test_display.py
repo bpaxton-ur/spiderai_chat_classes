@@ -1,9 +1,6 @@
 import streamlit as st
 import message_display_to_st_funcs as mdf
-from datetime import datetime
 from message import SinglePartMessage
-from io import BytesIO
-import base64
 
 def get_image_bytes(image_path):
     """
@@ -27,7 +24,7 @@ def get_image_bytes(image_path):
         return None
 
 def app():
-    st.title("Display Test")
+    st.title("Display Test App")
 
     #--------------------------------
     st.subheader("Text Display Test")
@@ -49,13 +46,13 @@ def app():
     st.write("Base 64")
 
     image_b64_message = SinglePartMessage.create_message(
-        author="Sam",
+        author="Maru",
         author_type="human",
         message_type="image_base64",
         message_value={
-            "filename": "test_image.png",
-            "image_base64": get_image_bytes("tests/test_image.png"),
-            "mime_type": "image/png"
+            "filename": "maru_cat",
+            "image_base64": get_image_bytes("tests/maru_cat.jpg"),
+            "mime_type": "image/jpg"
         },
     )
 
@@ -64,17 +61,66 @@ def app():
     st.write("URL")
 
     image_url_message = SinglePartMessage.create_message(
-        author="Sam",
+        author="Maru",
         author_type="human",
         message_type="image_url",
         message_value={
-            "filename": "test_image_url",
-            "url": "https://pethelpful.com/.image/w_3840,q_auto:good,c_fill,ar_4:3/MTk2Nzg5NTQzNDM1NzcyOTkw/cat-got-your-tongue-common-and-cute-cat-expressions.jpg",
-            "mime_type": "image/png"
+            "filename": "marumogu",
+            "url": "https://i0.wp.com/cutetropolis.com/wp-content/uploads/2024/01/vW0vwzu__co.jpg?fit=1200%2C675&ssl=1",
+            "mime_type": "image/jpg"
         },
     )
 
     mdf.write_image_to_st(image_url_message, st)
+
+    #--------------------------------
+    st.subheader("File Display Test")
+
+    st.write("Base 64")
+
+    file_b64_message = SinglePartMessage.create_message(
+        author="Maru",
+        author_type="human",
+        message_type="file_base64",
+        message_value={
+            "filename": "maru_cat.txt",
+            "file_base64": get_image_bytes("tests/maru_cat.txt"),
+            "mime_type": "text/plain"
+        },
+    )
+
+    mdf.write_file_to_st(file_b64_message, st)
+
+    st.write("URL")
+
+    file_url_message = SinglePartMessage.create_message(
+        author="Maru",
+        author_type="human",
+        message_type="file_url",
+        message_value={
+            "filename": "marumogu",
+            "url": "https://catsoftheweb.com/wp-content/uploads/2024/08/maru-cat.jpeg.webp",
+            "mime_type": "image/jpg"
+        },
+    )
+
+    mdf.write_file_to_st(file_url_message, st)
+
+    #--------------------------------
+    st.subheader("Audio Display Test")
+
+    audio_b64_message = SinglePartMessage.create_message(
+        author="Maru",
+        author_type="human",
+        message_type="audio_base64",
+        message_value={
+            "filename": "test_audio.mp3",
+            "audio_base64": get_image_bytes("tests/test_audio.mp3"),
+            "mime_type": "audio/mpeg"
+        },
+    )
+
+    mdf.write_audio_to_st(audio_b64_message, st)
 
 if __name__ == "__main__":
     app()
