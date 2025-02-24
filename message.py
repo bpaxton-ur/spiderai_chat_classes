@@ -13,8 +13,8 @@ License Info: See license.txt file
 #
 from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Any, final, Tuple
-from utils.chat_utils import message_types
-from utils.chat_utils.helper_functions import validate_type
+import message_types
+from helper_functions import validate_type
 from datetime import datetime
 
 ##############################################

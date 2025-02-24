@@ -31,15 +31,69 @@ message_types = {
         "empty_message_value":{"text": ""},
     },
 
-    # Image Type     
+    # Image Type (Base64)
     "image_base64":{
         "message_value_keys": set(["filename", "image_base64", "mime_type"]),
         "message_value_attribute_types":{
             "filename": str,
             "image_base64": bytes,
-            "mime_type": str            
+            "mime_type": str,
         },
         "empty_message_value":{"filename":"", "image_base64": b"", "mime_type":""}
-    }            
-}
+    }, 
 
+    # Image Type (URL)     
+    "image_url":{
+        "message_value_keys": set(["filename", "url", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "url": str,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "url":"", "mime_type":""}
+    },   
+
+    # File Type (Base64)     
+    "file_base64":{
+        "message_value_keys": set(["filename", "file_base64", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "file_base64": bytes,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "file_base64": b"", "mime_type":""}
+    },  
+
+    # File Type (URL)     
+    "file_url":{
+        "message_value_keys": set(["filename", "url", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "url": str,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "url":"", "mime_type":""}
+    },   
+
+    # Audio Type (Base64)     
+    "audio_base64":{
+        "message_value_keys": set(["filename", "audio_base64", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "audio_base64": bytes,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "audio_base64": b"", "mime_type":""}
+    },
+
+    # Audio Type (URL)     
+    "audio_url":{
+        "message_value_keys": set(["filename", "url", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "url": str,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "url":"", "mime_type":""}
+    }
+}
