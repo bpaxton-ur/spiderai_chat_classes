@@ -340,7 +340,7 @@ class Chat(BaseModel, validate_assignment=True):
         # If no messages or new author/author_type then add to the message list (we will create an empty message and augment)
         if (len(self.messages) == 0) or (author != self.messages[-1].get_author()) or (author_type != self.messages[-1].get_author_type()):
             message = SinglePartMessage.create_empty_message(author = author, author_type = author_type, message_type = message_type)
-            message.append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)
+            message.append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)
             self.messages.append(message)     
 
         # If the author is the same and author_type is the same
@@ -348,18 +348,18 @@ class Chat(BaseModel, validate_assignment=True):
             
             # Then if message type is the same then you just augment the message
             if (message_type == self.messages[-1].get_message_type()):
-                self.messages[-1].append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)
+                self.messages[-1].append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)
 
             # Then if the previous message type is not same (but not multipart) then you create a multipart message and add this (we will create an empty message and augment)
             elif ("multipart" != self.messages[-1].get_message_type()):
                 new_message1 = SinglePartMessage.create_empty_message(author = author, author_type = author_type, message_type = message_type)
-                new_message1.append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)                
+                new_message1.append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)                
                 new_message2 = MultiPartMessage.create_message(author = author, author_type = author_type, message_list = [self.messages[-1], new_message1])
                 self.messages[-1] = new_message2
 
             # Then if the previous message type is not same (but multipart) then you augment the multipart message
             elif ("multipart" == self.messages[-1].get_message_type()):
-                self.messages[-1].append_message_chunk_by_attribute(message_type = message_type, message_chunk_attribute = message_chunk_by_attribute)     
+                self.messages[-1].append_message_chunk_by_attribute(message_type = message_type, message_value_by_attribute = message_chunk_by_attribute)     
 
         # Update the time
         self.update_updated_at()
