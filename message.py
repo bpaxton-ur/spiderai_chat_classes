@@ -364,7 +364,7 @@ class SinglePartMessage(BaseMessageClass, validate_assignment=True):
         else:       
             # Update the message
             for key in self.message_value_keys:
-                self.append_message_chunk_attribute(message_chunk[key], key)
+                self.append_message_chunk_by_attribute(message_chunk[key], key)
 
             self.update_updated_at()
 
