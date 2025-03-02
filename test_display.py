@@ -1,6 +1,6 @@
 import streamlit as st
 import message_display_to_st_funcs as mdf
-from message import SinglePartMessage
+from message import SinglePartMessage, MultiPartMessage
 
 def get_image_bytes(image_path):
     """
@@ -38,7 +38,7 @@ def app():
     )
     
     # Call display function
-    mdf.write_single_chat_to_st(text_message, st)
+    mdf.write_chat_to_st(text_message, st)
 
     #--------------------------------
     st.subheader("Image Display Test")
@@ -56,7 +56,7 @@ def app():
         },
     )
 
-    mdf.write_single_chat_to_st(image_b64_message, st)
+    mdf.write_chat_to_st(image_b64_message, st)
 
     st.write("URL")
 
@@ -71,7 +71,7 @@ def app():
         },
     )
 
-    mdf.write_single_chat_to_st(image_url_message, st)
+    mdf.write_chat_to_st(image_url_message, st)
 
     #--------------------------------
     st.subheader("File Display Test")
@@ -89,7 +89,7 @@ def app():
         },
     )
 
-    mdf.write_single_chat_to_st(file_b64_message, st)
+    mdf.write_chat_to_st(file_b64_message, st)
 
     st.write("URL")
 
@@ -104,7 +104,7 @@ def app():
         },
     )
 
-    mdf.write_single_chat_to_st(file_url_message, st)
+    mdf.write_chat_to_st(file_url_message, st)
 
     #--------------------------------
     st.subheader("Audio Display Test")
@@ -120,7 +120,16 @@ def app():
         },
     )
 
-    mdf.write_single_chat_to_st(audio_b64_message, st)
+    #--------------------------------
+    st.subheader("Multi Part Message Display Test")
+
+    mt_message = MultiPartMessage.create_message(
+        author="Maru",
+        author_type="human",
+        message_list=[text_message, image_url_message, file_url_message],
+    )
+
+    mdf.write_chat_to_st(mt_message, st)
 
 if __name__ == "__main__":
     app()
