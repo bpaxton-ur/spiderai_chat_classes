@@ -38,7 +38,7 @@ def app():
     )
     
     # Call display function
-    mdf.write_chat_to_st(text_message, st)
+    mdf.write_single_chat_to_st(text_message, st)
 
     #--------------------------------
     st.subheader("Image Display Test")
@@ -56,7 +56,7 @@ def app():
         },
     )
 
-    mdf.write_chat_to_st(image_b64_message, st)
+    mdf.write_single_chat_to_st(image_b64_message, st)
 
     st.write("URL")
 
@@ -71,7 +71,7 @@ def app():
         },
     )
 
-    mdf.write_chat_to_st(image_url_message, st)
+    mdf.write_single_chat_to_st(image_url_message, st)
 
     #--------------------------------
     st.subheader("File Display Test")
@@ -89,7 +89,7 @@ def app():
         },
     )
 
-    mdf.write_chat_to_st(file_b64_message, st)
+    mdf.write_single_chat_to_st(file_b64_message, st)
 
     st.write("URL")
 
@@ -104,7 +104,7 @@ def app():
         },
     )
 
-    mdf.write_chat_to_st(file_url_message, st)
+    mdf.write_single_chat_to_st(file_url_message, st)
 
     #--------------------------------
     st.subheader("Audio Display Test")
@@ -120,7 +120,7 @@ def app():
         },
     )
 
-    mdf.write_chat_to_st(audio_b64_message, st)
+    mdf.write_single_chat_to_st(audio_b64_message, st)
 
 if __name__ == "__main__":
     app()
