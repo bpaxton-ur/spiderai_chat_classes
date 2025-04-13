@@ -95,5 +95,55 @@ message_types = {
             "mime_type": str,
         },
         "empty_message_value":{"filename":"", "url":"", "mime_type":""}
+    },
+
+    # Vector Store Type
+    "vector_store":{
+        "message_value_keys": set(["store_id", "documents", "embeddings"]),
+        "message_value_attribute_types":{
+            "store_id": str,
+            "documents": list,
+            "embeddings": list,
+        },
+        "empty_message_value":{"store_id": "", "documents": [], "embeddings": []}
+    },
+
+    # RAG Create Store Type
+    "rag_create_store":{
+        "message_value_keys": set(["store_id", "files"]),
+        "message_value_attribute_types":{
+            "store_id": str,
+            "files": list,
+        },
+        "empty_message_value":{"store_id": "", "files": []}
+    },
+
+    # RAG Query Type
+    "rag_query":{
+        "message_value_keys": set(["store_id", "query"]),
+        "message_value_attribute_types":{
+            "store_id": str,
+            "query": str,
+        },
+        "empty_message_value":{"store_id": "", "query": ""}
+    },
+
+    # RAG Response Type
+    "rag_response":{
+        "message_value_keys": set(["type", "store_id", "answer", "document_count", "message"]),
+        "message_value_attribute_types":{
+            "type": str,
+            "store_id": str,
+            "answer": str,
+            "document_count": int,
+            "message": str,
+        },
+        "empty_message_value":{
+            "type": "",
+            "store_id": "",
+            "answer": "",
+            "document_count": 0,
+            "message": ""
+        }
     }
 }
