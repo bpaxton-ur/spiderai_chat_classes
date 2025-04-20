@@ -90,6 +90,7 @@ class BaseMessageClass(BaseModel, validate_assignment=True):
             message_type: str: The type of the message.
         """        
         return self.message_type
+
             
     def get_metadata(self) -> dict:
         """
@@ -364,7 +365,7 @@ class SinglePartMessage(BaseMessageClass, validate_assignment=True):
         else:       
             # Update the message
             for key in self.message_value_keys:
-                self.append_message_chunk_attribute(message_chunk[key], key)
+                self.append_message_chunk_by_attribute(message_chunk[key], key)
 
             self.update_updated_at()
 
@@ -414,19 +415,24 @@ class SinglePartMessage(BaseMessageClass, validate_assignment=True):
 
         # Make sure this is a valid message type and if not raise an error
         if message_type not in message_types.message_types.keys():
-            raise ValueError("Unknown message type.")    
+            raise ValueError("Unknown message type.")   
+        
+        # creating a variable for message type attributes as this value is often accessed in the method
+        message_type_attributes = message_types.message_types[message_type]
 
         # If no message value then get the empty message value
         if not(message_value):
-            message_value = message_types.message_types[message_type]["empty_message_value"]    
+            message_value = message_type_attributes["empty_message_value"]  
+
+       
 
         # Create the message
         message = SinglePartMessage(author = author,
                                     author_type = author_type,
                                     message_type = message_type,
                                     message_value = message_value,
-                                    message_value_keys = message_types.message_types[message_type]["message_value_keys"],
-                                    message_value_attribute_types = message_types.message_types[message_type]["message_value_attribute_types"],
+                                    message_value_keys = message_type_attributes["message_value_keys"],
+                                    message_value_attribute_types = message_type_attributes["message_value_attribute_types"],
                                     metadata = metadata)
 
         return message
@@ -447,15 +453,19 @@ class SinglePartMessage(BaseMessageClass, validate_assignment=True):
 
         # Make sure this is a valid message type and if not raise an error
         if message_type not in message_types.message_types.keys():
-            raise ValueError("Unknown message type.")    
+            raise ValueError("Unknown message type.")   
 
+        # creating a variable for message type attributes as this value is often accessed in the method
+        message_type_attributes = message_types.message_types[message_type]
+
+        
         # Create the message
         message = SinglePartMessage(author = author,
                                     author_type = author_type,
                                     message_type = message_type,
-                                    message_value = message_types.message_types[message_type]["empty_message_value"]    ,
-                                    message_value_keys = message_types.message_types[message_type]["message_value_keys"],
-                                    message_value_attribute_types = message_types.message_types[message_type]["message_value_attribute_types"],
+                                    message_value = message_type_attributes["empty_message_value"]    ,
+                                    message_value_keys = message_type_attributes["message_value_keys"],
+                                    message_value_attribute_types = message_type_attributes["message_value_attribute_types"],
                                     metadata = {})
 
         return message    
@@ -640,6 +650,7 @@ class MultiPartMessage(BaseMessageClass, validate_assignment=True):
         
         return message_type_list
 
+
     def set_message_list(self, message_list: list[SinglePartMessage]) -> None:
         """
         Setter for the message list.
@@ -737,7 +748,7 @@ class MultiPartMessage(BaseMessageClass, validate_assignment=True):
         # If previous message type is not same then you create a new message and add this (we will create an empty message and augment)
         elif (message_type != self.message_list[-1].get_message_type()):
             message = SinglePartMessage.create_empty_message(author = self.author, author_type = self.author_type, message_type = message_type)
-            message.append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)
+            message.append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)
             self.message_list.append(message)     
 
         # If message type is the same as the last message in the multipart, then augment the message
