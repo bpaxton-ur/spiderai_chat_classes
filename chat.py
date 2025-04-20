@@ -36,6 +36,7 @@ class Chat(BaseModel, validate_assignment=True):
         get_title() -> str        
         get_messages() -> list[Union[SinglePartMessage, MultiPartMessage]]
         get_message_type_list() -> list[str]
+        get_message_full_type_list() -> list[str]
         get_developer_instructions() -> str
         get_developer_files() -> list[dict]
         get_metadata() -> dict
@@ -110,7 +111,29 @@ class Chat(BaseModel, validate_assignment=True):
         # Make the list unique
         message_type_list = list(set(message_type_list_int))
 
-        return message_type_list    
+        return message_type_list   
+    
+    def get_message_full_type_list(self) -> list[str]:
+        """
+        Generates a list of all the full types (message_type + '_' + mime_type) in chat (including within the multipart messages)
+
+        Returns:
+            message_type_list: list[str]: A list of all the types in the chat (including within the multipart messages)
+        """
+
+        # Get all the types
+        message_full_type_list_int = []
+        for message in self.messages:
+            if message.get_message_type() == "multipart":
+                message_full_type_list_int = message_full_type_list_int + message.get_message_full_type_list() + ["multipart"]
+            else:
+                message_full_type_list_int.append(message.get_message_full_type())
+
+        # Make the list unique
+        message_full_type_list = list(set(message_full_type_list_int))
+
+        return message_full_type_list   
+
 
     def get_developer_instructions(self) -> str:
         """
@@ -340,7 +363,7 @@ class Chat(BaseModel, validate_assignment=True):
         # If no messages or new author/author_type then add to the message list (we will create an empty message and augment)
         if (len(self.messages) == 0) or (author != self.messages[-1].get_author()) or (author_type != self.messages[-1].get_author_type()):
             message = SinglePartMessage.create_empty_message(author = author, author_type = author_type, message_type = message_type)
-            message.append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)
+            message.append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)
             self.messages.append(message)     
 
         # If the author is the same and author_type is the same
@@ -348,18 +371,18 @@ class Chat(BaseModel, validate_assignment=True):
             
             # Then if message type is the same then you just augment the message
             if (message_type == self.messages[-1].get_message_type()):
-                self.messages[-1].append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)
+                self.messages[-1].append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)
 
             # Then if the previous message type is not same (but not multipart) then you create a multipart message and add this (we will create an empty message and augment)
             elif ("multipart" != self.messages[-1].get_message_type()):
                 new_message1 = SinglePartMessage.create_empty_message(author = author, author_type = author_type, message_type = message_type)
-                new_message1.append_message_chunk_by_attribute(message_chunk_attribute = message_chunk_by_attribute, key = key)                
+                new_message1.append_message_chunk_by_attribute(message_value_by_attribute = message_chunk_by_attribute, key = key)                
                 new_message2 = MultiPartMessage.create_message(author = author, author_type = author_type, message_list = [self.messages[-1], new_message1])
                 self.messages[-1] = new_message2
 
             # Then if the previous message type is not same (but multipart) then you augment the multipart message
             elif ("multipart" == self.messages[-1].get_message_type()):
-                self.messages[-1].append_message_chunk_by_attribute(message_type = message_type, message_chunk_attribute = message_chunk_by_attribute)     
+                self.messages[-1].append_message_chunk_by_attribute(message_type = message_type, message_chunk_by_attribute = message_chunk_by_attribute, key = key)     
 
         # Update the time
         self.update_updated_at()

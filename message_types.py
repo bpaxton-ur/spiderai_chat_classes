@@ -31,6 +31,17 @@ message_types = {
         "empty_message_value":{"text": ""},
     },
 
+    # Image Type (BytesIO)
+    "image_bytesio":{
+        "message_value_keys": set(["filename", "image_bytesio", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "image_bytesio": bytes,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "image_bytesio": b"", "mime_type":""}
+    }, 
+
     # Image Type (Base64)
     "image_base64":{
         "message_value_keys": set(["filename", "image_base64", "mime_type"]),
@@ -53,6 +64,18 @@ message_types = {
         "empty_message_value":{"filename":"", "url":"", "mime_type":""}
     },   
 
+    # File Type (BytesIO)     
+    "file_bytesio":{
+        "message_value_keys": set(["filename", "file_bytesio", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "file_bytesio": bytes,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "file_bytesio": b"", "mime_type":""}
+    },
+    
+    
     # File Type (Base64)     
     "file_base64":{
         "message_value_keys": set(["filename", "file_base64", "mime_type"]),
@@ -75,6 +98,19 @@ message_types = {
         "empty_message_value":{"filename":"", "url":"", "mime_type":""}
     },   
 
+    #### file bytes, io image and audio bytes too.....
+
+    # Audio Type (BytesIO)     
+    "audio_bytesio":{
+        "message_value_keys": set(["filename", "audio_bytesio", "mime_type"]),
+        "message_value_attribute_types":{
+            "filename": str,
+            "audio_bytesio": bytes,
+            "mime_type": str,
+        },
+        "empty_message_value":{"filename":"", "audio_bytesio": b"", "mime_type":""}
+    },
+
     # Audio Type (Base64)     
     "audio_base64":{
         "message_value_keys": set(["filename", "audio_base64", "mime_type"]),
@@ -95,55 +131,5 @@ message_types = {
             "mime_type": str,
         },
         "empty_message_value":{"filename":"", "url":"", "mime_type":""}
-    },
-
-    # Vector Store Type
-    "vector_store":{
-        "message_value_keys": set(["store_id", "documents", "embeddings"]),
-        "message_value_attribute_types":{
-            "store_id": str,
-            "documents": list,
-            "embeddings": list,
-        },
-        "empty_message_value":{"store_id": "", "documents": [], "embeddings": []}
-    },
-
-    # RAG Create Store Type
-    "rag_create_store":{
-        "message_value_keys": set(["store_id", "files"]),
-        "message_value_attribute_types":{
-            "store_id": str,
-            "files": list,
-        },
-        "empty_message_value":{"store_id": "", "files": []}
-    },
-
-    # RAG Query Type
-    "rag_query":{
-        "message_value_keys": set(["store_id", "query"]),
-        "message_value_attribute_types":{
-            "store_id": str,
-            "query": str,
-        },
-        "empty_message_value":{"store_id": "", "query": ""}
-    },
-
-    # RAG Response Type
-    "rag_response":{
-        "message_value_keys": set(["type", "store_id", "answer", "document_count", "message"]),
-        "message_value_attribute_types":{
-            "type": str,
-            "store_id": str,
-            "answer": str,
-            "document_count": int,
-            "message": str,
-        },
-        "empty_message_value":{
-            "type": "",
-            "store_id": "",
-            "answer": "",
-            "document_count": 0,
-            "message": ""
-        }
     }
 }
